@@ -23,25 +23,27 @@ export function HomePage() {
         })
     }, [city])
 
-    let videoSrc = '/default.mp4'
+    const BASE_URL = import.meta.env.BASE_URL;
+
+    let videoSrc = `${BASE_URL}default.mp4`
 
     if (weather) {
         switch (weather.weather[0].main) {
             case "Rain":
-                videoSrc = '/Rain.mp4'
+                videoSrc = `${BASE_URL}Rain.mp4`
                 break;
             case "Mist":
-                videoSrc = '/Mist.mp4'
+                videoSrc = `${BASE_URL}Mist.mp4`
                 break;
             case "Clouds":
-                videoSrc = '/Clouds.mp4'
+                videoSrc = `${BASE_URL}Clouds.mp4`
                 break;
             case "Clear":
-                videoSrc = '/clear.mp4'
+                videoSrc = `${BASE_URL}clear.mp4`
                 break;
 
             default:
-                videoSrc = '/default.mp4'
+                videoSrc = `${BASE_URL}default.mp4`
         }
 
     }
