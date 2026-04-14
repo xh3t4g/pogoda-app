@@ -1,20 +1,24 @@
 import { useState, useEffect } from 'react'
 import '../css/index.css'
 import css from '../css/HomePage.module.css'
+import { useRef } from 'react';
 
 export function HomePage() {
     const [city, setCity] = useState('Москва');
     const [weather, setWeather] = useState(null);
+    const [isInvalid, setIsInvalid] = useState(false);
+    const inputRef = useRef(null)
 
     useEffect(() => {
         fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=5ce399fe4e8b9c5ee720e4b99ef9a67f&units=metric&lang=ru`)
         .then(res => res.json())
         .then(data => {
             if (data.cod === "404"){
-                alert("город не найден")
+                setIsInvalid(true)
                 return
             }
-
+            
+            setIsInvalid(false)
             setWeather(data);
         })
     }, [city])
@@ -41,6 +45,17 @@ export function HomePage() {
         }
 
     }
+
+    useEffect(() => {
+        const handleKeyDown = () => {
+            inputRef.current.focus();
+        } 
+
+        window.addEventListener('keydown', handleKeyDown);
+
+        return () => window.removeEventListener('keydown', handleKeyDown);
+    }, [])
+
     return <>
 
             <video key={videoSrc} autoPlay muted loop>
@@ -48,12 +63,17 @@ export function HomePage() {
             </video>
 
     
-            <div className={css["container"]}>
+            <div className={css["container"]} key={weather?.name}>
             <form className="form" onSubmit={(e) => {
                 e.preventDefault();
-                setCity(e.target.inputCity.value)
+                const value = e.target.inputCity.value.trim();
+                if (value) {
+                    setIsInvalid(false)
+                    setCity(value)
+                    inputRef.current.value = '';
+                }
             }}>
-                <input type="text" name="inputCity" id={css["inputCity"]} placeholder="Введите город..." />
+                <input ref={inputRef} type="text" name="inputCity" className={`${css["inputCity"]} ${isInvalid ? css['red'] : ''}`} placeholder="Введите город..." />
             </form>
 
             {weather && <>

@@ -11,7 +11,7 @@
     border-radius: 10px;
 }
 
-#inputCity {
+.inputCity {
     background-color: #323334;
     border: 1px solid transparent;
     border-radius: 4px;
@@ -23,11 +23,11 @@
         box-shadow 0.25s ease;
 }
 
-#inputCity:hover {
+.inputCity:hover {
     border-color: rgb(111,111,111);
 }
 
-#inputCity:focus {
+.inputCity:focus {
     outline: none;
     border-color: rgb(68, 68, 148);
     box-shadow: 0 0 0 2px rgba(139, 139, 248, 0.579);
@@ -91,6 +91,23 @@
     color: snow;
     font-family: 'Manrope', sans-serif;
     font-weight: 600;
+}
+
+.red:focus {
+    box-shadow: 0 0 0 2px rgba(248, 139, 139, 0.579);
+}
+
+.WeatherIcone,
+.WeatherTemp,
+.TitleCity,
+.ParametrCity,
+.card span {
+    animation: scaleIn 0.5s ease;
+}
+
+@keyframes scaleIn {
+    from {transform: translateY(-10px); opacity: 0;}
+    to {transform: translateY(0px); opacity: 1;}
 }
 
 
