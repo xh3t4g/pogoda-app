@@ -2,6 +2,9 @@ import { useState, useEffect } from 'react'
 import '../css/index.css'
 import css from '../css/HomePage.module.css'
 import { useRef } from 'react';
+import { BASE_URL } from '../data/Videoelements';
+import { Videoelements } from '../data/Videoelements';
+import { video_fun } from '../components/video_fun';
 
 export function HomePage() {
 
@@ -40,27 +43,34 @@ export function HomePage() {
         })
     }, [city])
 
-    const BASE_URL = import.meta.env.BASE_URL;
+    useEffect(() => {
+        
+    })
+
 
     let videoSrc = `${BASE_URL}default.mp4`
+
 
     if (weather) {
         switch (weather.weather[0].main) {
             case "Rain":
-                videoSrc = `${BASE_URL}Rain.mp4`
+                videoSrc = video_fun(Videoelements, "Rain");
                 break;
             case "Mist":
-                videoSrc = `${BASE_URL}Mist.mp4`
+                videoSrc =  video_fun(Videoelements, "Mist");
                 break;
             case "Clouds":
-                videoSrc = `${BASE_URL}Clouds.mp4`
+                videoSrc =  video_fun(Videoelements, "Clouds");
                 break;
             case "Clear":
-                videoSrc = `${BASE_URL}clear.mp4`
+                videoSrc = video_fun(Videoelements, "Clear")
+                break;
+            case "Snow":
+                videoSrc = video_fun(Videoelements, "Snow")
                 break;
 
             default:
-                videoSrc = `${BASE_URL}default.mp4`
+                videoSrc = video_fun(Videoelements, "Default")
         }
 
     }
