@@ -24,7 +24,7 @@ export function HomePage() {
     const [city, setCity] = useState('Москва');
     const [weather, setWeather] = useState<Weather | null>(null)
     const [isInvalid, setIsInvalid] = useState(false);
-    const inputRef = useRef(null)
+    const inputRef = useRef<HTMLInputElement>(null)
 
     useEffect(() => {
         fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=5ce399fe4e8b9c5ee720e4b99ef9a67f&units=metric&lang=ru`)
@@ -67,7 +67,7 @@ export function HomePage() {
 
     useEffect(() => {
         const handleKeyDown = () => {
-            inputRef.current.focus();
+            inputRef.current?.focus();
         } 
 
         window.addEventListener('keydown', handleKeyDown);
@@ -89,7 +89,9 @@ export function HomePage() {
                 if (value) {
                     setIsInvalid(false)
                     setCity(value)
-                    inputRef.current.value = '';
+                    if (inputRef.current) {
+                        inputRef.current.value = ''
+                    };
                 }
             }}>
                 <input ref={inputRef} type="text" name="inputCity" className={`${css["inputCity"]} ${isInvalid ? css['red'] : ''}`} placeholder="Введите город..." />
