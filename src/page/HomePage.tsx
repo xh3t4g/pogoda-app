@@ -4,8 +4,25 @@ import css from '../css/HomePage.module.css'
 import { useRef } from 'react';
 
 export function HomePage() {
+
+    interface Weather {
+        name: string;
+        main: {
+            temp: number;
+            feels_like: number;
+            humidity: number;
+        };
+        weather: {
+            main: string;
+            description: string;
+        }[];
+        wind: {
+            speed: number;
+        };
+    }
+    
     const [city, setCity] = useState('Москва');
-    const [weather, setWeather] = useState(null);
+    const [weather, setWeather] = useState<Weather | null>(null)
     const [isInvalid, setIsInvalid] = useState(false);
     const inputRef = useRef(null)
 
