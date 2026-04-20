@@ -28,9 +28,11 @@ export function HomePage() {
     const [weather, setWeather] = useState<Weather | null>(null)
     const [isInvalid, setIsInvalid] = useState(false);
     const inputRef = useRef<HTMLInputElement>(null)
+    const [videoSrc, setVideoSrc] = useState(`${BASE_URL}default.mp4`)
+    const apiKey = import.meta.env.VITE_WEATHER_API_KEY;
 
     useEffect(() => {
-        fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=5ce399fe4e8b9c5ee720e4b99ef9a67f&units=metric&lang=ru`)
+        fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric&lang=ru`)
         .then(res => res.json())
         .then(data => {
             if (data.cod === "404"){
@@ -40,40 +42,30 @@ export function HomePage() {
             
             setIsInvalid(false)
             setWeather(data);
+            
+            switch (data.weather[0].main) {
+                case "Rain":
+                    setVideoSrc(video_fun(Videoelements, "Rain"))
+                    break;
+                case "Mist":
+                    setVideoSrc(video_fun(Videoelements, "Mist"));
+                    break;
+                case "Clouds":
+                    setVideoSrc(video_fun(Videoelements, "Clouds"));
+                    break;
+                case "Clear":
+                    setVideoSrc(video_fun(Videoelements, "Clear"));
+                    break;
+                case "Snow":
+                    setVideoSrc(video_fun(Videoelements, "Snow"));
+                    break;
+
+                default:
+                    setVideoSrc(video_fun(Videoelements, "Default"));
+            }
         })
     }, [city])
 
-    useEffect(() => {
-        
-    })
-
-
-    let videoSrc = `${BASE_URL}default.mp4`
-
-
-    if (weather) {
-        switch (weather.weather[0].main) {
-            case "Rain":
-                videoSrc = video_fun(Videoelements, "Rain");
-                break;
-            case "Mist":
-                videoSrc =  video_fun(Videoelements, "Mist");
-                break;
-            case "Clouds":
-                videoSrc =  video_fun(Videoelements, "Clouds");
-                break;
-            case "Clear":
-                videoSrc = video_fun(Videoelements, "Clear")
-                break;
-            case "Snow":
-                videoSrc = video_fun(Videoelements, "Snow")
-                break;
-
-            default:
-                videoSrc = video_fun(Videoelements, "Default")
-        }
-
-    }
 
     useEffect(() => {
         const handleKeyDown = () => {
@@ -104,7 +96,7 @@ export function HomePage() {
                     };
                 }
             }}>
-                <input ref={inputRef} type="text" name="inputCity" className={`${css["inputCity"]} ${isInvalid ? css['red'] : ''}`} placeholder="Введите город..." />
+                <input ref={inputRef} type="text" name="inputCity" className={`${css["inputCity"]} ${isInvalid ? css['red'] : ''}`} placeholder="Введите город..." enterKeyHint="search" />
             </form>
 
             {weather && <>
